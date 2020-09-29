@@ -1,0 +1,6 @@
+main: fr.northenflo.permiflow.Main
+name: PermiFlow
+version: '1.0'
+description: A plugin permission
+author: NorthenFlo
+website: northenflo.xyz
