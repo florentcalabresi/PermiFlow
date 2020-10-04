@@ -1,5 +1,6 @@
 package fr.northenflo.permiflow.variables;
 
+import fr.northenflo.permiflow.Main;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -20,6 +21,8 @@ public class GroupPermiFlow {
         this.suffix = suffix;
     }
 
+
+
     public String getGroupID(){
         return this.groupID;
     }
@@ -34,5 +37,30 @@ public class GroupPermiFlow {
 
     public String getSuffix() {
         return this.suffix;
+    }
+
+    public static GroupPermiFlow getGroupList(String uuid) {
+        for(GroupPermiFlow groupe : Main.getInstance().getArrListGroup()) {
+            if (groupe.getGroupID().equalsIgnoreCase(uuid))
+                return groupe;
+        }
+        return null;
+    }
+
+    public static GroupPermiFlow getGroupListWN(String name) {
+        for(GroupPermiFlow groupe : Main.getInstance().getArrListGroup()) {
+            if (groupe.getName().equalsIgnoreCase(name))
+                return groupe;
+        }
+        return null;
+    }
+
+    public static void removeGroupList(UUID uuid) {
+        int count = 0;
+        while (Main.getInstance().getArrListGroup().size() > count) {
+            if(Main.getInstance().getArrListGroup().get(count).getGroupID().equalsIgnoreCase(String.valueOf(uuid)))
+                Main.getInstance().getArrListGroup().remove(count);
+            count++;
+        }
     }
 }

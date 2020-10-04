@@ -4,3 +4,16 @@ version: '1.0'
 description: A plugin permission
 author: NorthenFlo
 website: northenflo.xyz
+commands:
+  preload:
+    description: Reload plugin config
+    usage: /preload
+    permission: permiflow.reload
+  pgroup:
+    description: Group Actions
+    usage: /pgroup
+    permission: permiflow.group.*
+  pplayer:
+    description: Player Actions
+    usage: /pplayer
+    permission: permiflow.player.*
