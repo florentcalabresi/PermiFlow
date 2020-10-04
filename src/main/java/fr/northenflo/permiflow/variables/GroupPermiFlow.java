@@ -1,18 +1,19 @@
 package fr.northenflo.permiflow.variables;
 
 import fr.northenflo.permiflow.Main;
-import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class GroupPermiFlow {
 
     public static GroupPermiFlow defaultGroup = new GroupPermiFlow(String.valueOf(UUID.randomUUID()), "default", "Default", "");
 
-    private String groupID;
-    private String name;
-    private String prefix;
-    private String suffix;
+    private final String groupID;
+    private final String name;
+    private final String prefix;
+    private final String suffix;
+    private final ArrayList<PermissionPermiFlow> listPerms = new ArrayList<PermissionPermiFlow>();
 
     public GroupPermiFlow(String groupID, String name, String prefix, String suffix){
         this.groupID = groupID;
@@ -21,7 +22,7 @@ public class GroupPermiFlow {
         this.suffix = suffix;
     }
 
-
+    public ArrayList<PermissionPermiFlow> getListPerms(){ return this.listPerms; }
 
     public String getGroupID(){
         return this.groupID;

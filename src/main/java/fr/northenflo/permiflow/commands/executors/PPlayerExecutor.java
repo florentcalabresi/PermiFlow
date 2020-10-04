@@ -6,12 +6,8 @@ import fr.northenflo.permiflow.commands.ICommandP;
 import fr.northenflo.permiflow.variables.GroupPermiFlow;
 import fr.northenflo.permiflow.variables.PlayerPermiFlow;
 import org.apache.commons.lang.NullArgumentException;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-
-import java.util.Objects;
 import java.util.UUID;
 
 public class PPlayerExecutor extends ICommandP {
@@ -32,7 +28,7 @@ public class PPlayerExecutor extends ICommandP {
                         GroupPermiFlow groupeGet = GroupPermiFlow.getGroupListWN(nameGroup);
                         PlayerPermiFlow playerPermiFlow = PlayerPermiFlow.getPlayerList(playerOff.getUniqueId());
                         if(!playerPermiFlow.getGroupe().getGroupID().equalsIgnoreCase(groupeGet.getGroupID())) {
-                            SQLPermiFlow.updatePlayer(playerOff.getPlayer(), UUID.fromString(groupeGet.getGroupID()), playerPermiFlow.getPrefix(), playerPermiFlow.getSuffix());
+                            SQLPermiFlow.updatePlayer(this.getInstancePlugin(),  playerOff.getPlayer(), UUID.fromString(groupeGet.getGroupID()), playerPermiFlow.getPrefix(), playerPermiFlow.getSuffix());
                             this.getInstancePlugin().sendMessagePlayer(this.getSender(), "Le joueur a été promote dans le groupe " + nameGroup);
                         }else {
                             this.getInstancePlugin().sendMessagePlayer(this.getSender(), "Le joueur est déjà dans le groupe " + nameGroup);

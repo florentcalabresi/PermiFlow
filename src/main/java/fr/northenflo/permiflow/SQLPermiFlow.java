@@ -4,6 +4,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import fr.northenflo.permiflow.variables.GroupPermiFlow;
+import fr.northenflo.permiflow.variables.PermissionPermiFlow;
 import fr.northenflo.permiflow.variables.PlayerPermiFlow;
 import org.bukkit.entity.Player;
 
@@ -18,6 +19,7 @@ public class SQLPermiFlow {
     public SQLPermiFlow(){
         listCollections.add("players");
         listCollections.add("groupes");
+        listCollections.add("permissions");
     }
 
     public static void createsTables(){
@@ -27,7 +29,13 @@ public class SQLPermiFlow {
                 Main.getInstance().log("INFOS", "Collection "+collection+" created successfully");
             }
         }
+    }
 
+    public static boolean checkPermAlreadyGive(String node, String groupeID) {
+        DBObject r = new BasicDBObject("groupe_uuid", groupeID);
+        r.put("node", node);
+        DBObject found = Main.getInstance().getPermissionsCollection().findOne(r);
+        return found != null;
     }
 
     public static boolean checkGroupExist(String key, String value) {
@@ -45,11 +53,27 @@ public class SQLPermiFlow {
         Main.getInstance().getArrListGroup().add(new GroupPermiFlow(groupID, name, prefix, suffix));
     }
 
+    public static void storePerms(UUID uuid, String node, String idGroup) {
+        DBObject obj = new BasicDBObject("uuid", String.valueOf(uuid));
+        obj.put("node", node);
+        obj.put("groupe_uuid", idGroup);
+        Main.getInstance().getPermissionsCollection().insert(obj);
+        GroupPermiFlow.getGroupList(idGroup).getListPerms().add(new PermissionPermiFlow(String.valueOf(uuid), node));
+    }
+
+    public static void deletePerms(String nodePerm, String groupID) {
+        DBObject r = new BasicDBObject("groupe_uuid", groupID);
+        r.put("node", nodePerm);
+        Main.getInstance().getPermissionsCollection().remove(r);
+    }
+
     public DBObject getGroupe(String key, String value){
         DBObject r = new BasicDBObject(key, value);
         DBObject found = Main.getInstance().getGroupesCollection().findOne(r);
         return found;
     }
+
+    public static List<DBObject> getPermissionsAll() { return Main.getInstance().getPermissionsCollection().find().toArray(); }
 
     public static List<DBObject> getGroupesAll(){
          return Main.getInstance().getGroupesCollection().find().toArray();
@@ -71,7 +95,7 @@ public class SQLPermiFlow {
         obj.put("prefix", "");
         obj.put("suffix", "");
         Main.getInstance().getPlayersCollection().insert(obj);
-        Main.getInstance().getArrListPlayer().add(new PlayerPermiFlow(String.valueOf(player.getUniqueId()), GroupPermiFlow.getGroupList(String.valueOf(Main.getInstance().getSqlPermiFlow().getGroupe("name", "default").get("uuid"))), "", ""));
+        Main.getInstance().getArrListPlayer().add(new PlayerPermiFlow(String.valueOf(player.getUniqueId()), GroupPermiFlow.getGroupList(String.valueOf(Main.getInstance().getSqlPermiFlow().getGroupe("name", "default").get("uuid"))), player.addAttachment(Main.getInstance()), "", ""));
     }
 
     public static void updateGroup(GroupPermiFlow group, String name, String prefix, String suffix) {
@@ -95,7 +119,7 @@ public class SQLPermiFlow {
         return found;
     }
 
-    public static void updatePlayer(Player player, UUID groupID, String prefix, String suffix) {
+    public static void updatePlayer(Main instancePL, Player player, UUID groupID, String prefix, String suffix) {
         DBObject r = new BasicDBObject("uuid", String.valueOf(player.getUniqueId()));
         DBObject found = Main.getInstance().getPlayersCollection().findOne(r);
         if (found == null)
@@ -106,7 +130,7 @@ public class SQLPermiFlow {
         obj.put("suffix", suffix);
         Main.getInstance().getPlayersCollection().update(found, obj);
         PlayerPermiFlow.removePlayerList(player.getUniqueId());
-        Main.getInstance().getArrListPlayer().add(new PlayerPermiFlow(String.valueOf(player.getUniqueId()), GroupPermiFlow.getGroupList(String.valueOf(groupID)), prefix, suffix));
+        Main.getInstance().getArrListPlayer().add(new PlayerPermiFlow(String.valueOf(player.getUniqueId()), GroupPermiFlow.getGroupList(String.valueOf(groupID)), player.addAttachment(instancePL), prefix, suffix));
     }
 
     public static DBObject getGroupeForPlayer(String key, String value){

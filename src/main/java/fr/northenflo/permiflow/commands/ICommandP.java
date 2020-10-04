@@ -40,17 +40,19 @@ public abstract class ICommandP implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         this.sender = sender;
-        if(this.onlyPlayer){
+        if (this.onlyPlayer) {
             if (!(sender instanceof Player)) {
-                Main.getInstance().sendMessagePlayer(sender, "Vous n'avez pas la permission pour la commande, "+commandLabel);
+                Main.getInstance().sendMessagePlayer(sender, "Vous n'avez pas la permission pour la commande, " + commandLabel);
                 return true;
-            }else
+            } else
                 this.playerSender = (Player) sender;
         }
 
-        if (!(sender.hasPermission(this.perms))){
-            Main.getInstance().sendMessagePlayer(sender, "Vous n'avez pas la permission pour la commande, "+commandLabel);
-            return true;
+        if (!this.perms.isEmpty()) {
+            if (!(sender.hasPermission(this.perms))) {
+                Main.getInstance().sendMessagePlayer(sender, "Vous n'avez pas la permission pour la commande, " + commandLabel);
+                return true;
+            }
         }
 
         if (!(args.length>=this.getLengthMinArgs())){

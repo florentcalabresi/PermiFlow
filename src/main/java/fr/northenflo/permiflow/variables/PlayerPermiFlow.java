@@ -1,19 +1,22 @@
 package fr.northenflo.permiflow.variables;
 
 import fr.northenflo.permiflow.Main;
+import org.bukkit.permissions.PermissionAttachment;
 
 import java.util.UUID;
 
 public class PlayerPermiFlow {
 
-    private String userID;
+    private final String userID;
     private GroupPermiFlow groupe;
-    private String prefix;
-    private String suffix;
+    private PermissionAttachment attachmentPerm;
+    private final String prefix;
+    private final String suffix;
 
-    public PlayerPermiFlow(String userID, GroupPermiFlow groupe, String prefix, String suffix){
+    public PlayerPermiFlow(String userID, GroupPermiFlow groupe, PermissionAttachment attachmentPerm,String prefix, String suffix){
         this.userID = userID;
         this.groupe = groupe;
+        this.attachmentPerm = attachmentPerm;
         this.prefix = prefix;
         this.suffix = suffix;
     }
@@ -24,6 +27,10 @@ public class PlayerPermiFlow {
 
     public GroupPermiFlow getGroupe(){
         return this.groupe;
+    }
+
+    public PermissionAttachment getAttachmentPerm() {
+        return attachmentPerm;
     }
 
     public void setGroupe(GroupPermiFlow newGroupe){
