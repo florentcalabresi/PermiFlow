@@ -37,7 +37,7 @@ public class Main extends JavaPlugin {
 
         ServerAddress addr = new ServerAddress(ip, port);
         List<MongoCredential> credentials = new ArrayList<MongoCredential>();
-        credentials.add(MongoCredential.createCredential("NorthenFlo", "PermiFlow", "#0801Flo62150".toCharArray()));
+        credentials.add(MongoCredential.createCredential("NorthenFlo", "PermiFlow", "password".toCharArray()));
 
 
         client = new MongoClient(addr, credentials);

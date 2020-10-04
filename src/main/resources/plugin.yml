@@ -5,15 +5,15 @@ description: A plugin permission
 author: NorthenFlo
 website: northenflo.xyz
 commands:
-  preload:
+  pfreload:
     description: Reload plugin config
-    usage: /preload
+    usage: /pfreload
     permission: permiflow.reload
-  pgroup:
+  pfgroup:
     description: Group Actions
-    usage: /pgroup
+    usage: /pfgroup
     permission: permiflow.group.*
-  pplayer:
+  pfplayer:
     description: Player Actions
-    usage: /pplayer
+    usage: /pfplayer
     permission: permiflow.player.*
